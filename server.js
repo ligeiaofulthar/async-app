@@ -43,10 +43,21 @@ app.get('/', function(req, res) {
 });
 
 /* post route */
-
 app.post('/add', addData);
 
 function addData (req, res){
+    let data = req.body;
+    // Create new entry for JS Object Endpoint
+    projectData["temp"] = data.temp;
+    projectData["date"] = data.date;
+    projectData["user"] = data.user;
+    console.log(data.temp);
+
+    // Send response to Endpoint
+    res.send(projectData);
+}
+
+
     // console.log(req.body)
 
     // let newData = {
@@ -59,12 +70,3 @@ function addData (req, res){
     // console.log("Wwork22");
 
   // console.log(request.body)
-  let data = req.body;
-  console.log(data.temp);
-  // Create new entry for JS Object Endpoint
-  projectData["temp"] = data.temp;
-  projectData["date"] = data.date;
-  projectData["user"] = data.user;
-  // Send response to Endpoint
-  res.send(projectData);
-}
