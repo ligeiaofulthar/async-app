@@ -10,7 +10,7 @@ async weather app for udacity
 
 ## Instructions
 
-In this project, I develop a async weather app, which takes input in form of city & country from the openweatermap api and returns temperature & date. Additionally the user can add his feelings.
+In this project, I develop an async weather app, which takes input in form of city & country from the openweatermap api and returns temperature & date. Additionally the user can add his feelings.
 
 To look at my project, open `index.html`
 

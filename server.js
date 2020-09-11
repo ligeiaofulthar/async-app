@@ -37,13 +37,14 @@ let projectData = {};
 // Make sure your POST route is setup to add each of these values with a key to projectData.
 
 /* get route */
-app.get('/', function(req, res) {
+app.get('/get', sendData());
+
+function sendData(req, res) {
     res.send(projectData);
-    console.log(projectData);
-});
+}
 
 /* post route */
-app.post('/add', addData);
+app.post('/add', addData());
 
 function addData (req, res){
     let data = req.body;
@@ -51,11 +52,18 @@ function addData (req, res){
     projectData["temp"] = data.temp;
     projectData["date"] = data.date;
     projectData["user"] = data.user;
-    console.log(data.temp);
+    console.log("data received");
 
     // Send response to Endpoint
     res.send(projectData);
 }
+
+// app.post('/addWeather', storeWeatherData());
+// function storeWeatherData(req, res) {
+//     projectData=req.body;
+//     console.log("data received");
+//     return data;
+// }
 
 
     // console.log(req.body)

@@ -8,24 +8,27 @@
 
 const url = "http://api.openweathermap.org/data/2.5/weather?q=";
 const apiKey = "&appid=ccadabc74cb18925fcd2f9f952730b48";
-// add &units=metric
+const metric = "&units=metric";
 
 //get zip input
-let button = document.getElementById("generate");
 
-button.addEventListener('click', getData);
+document.getElementById("generate").addEventListener('click', getData);
+
+// There will be a GET request to open weather API to get the temperature
+// There will be another GET request to our server to get information about recent entry from the last temperature
+// There will be a POST request to submit the new data entry to the server.
 
 function getData(e){
-    const newZip = document.getElementById('zip').value;
-    const newCountry = document.getElementById('country').value;
-    getZip(url+newZip+','+newCountry+apiKey);
-
+    e.preventDefault();
+    let newZip = document.getElementById('zip').value;
+    let newCountry = document.getElementById('country').value;
+    getZip(newZip+','+newCountry);
 }
 
+const getZip = async (zip, country)=>{
+    const res = await fetch(url+zip+','+country+apiKey+metric)
 
-
-const getZip = async (url, newZip, newCountry, apiKey)=>{
-    const res = await fetch(url+newZip+','+newCountry+apiKey)
+    // const res = await fetch(`${url}${newZip},${newCountry}${apiKey}`)
     try {
         const data = await res.json();
         console.log(data);
@@ -35,7 +38,7 @@ const getZip = async (url, newZip, newCountry, apiKey)=>{
     }
 }
 
-console.log(getZip(url, "vienna", "AT", apiKey));
+// console.log(getZip(url, "vienna", "AT", apiKey));
 
 
 // const postData = async ( url = '', data = {})=>{
