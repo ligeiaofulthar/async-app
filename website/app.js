@@ -6,29 +6,55 @@
 // user entered zip code (see input in html with id zip)
 // personal API key
 
-const apiKey = "ccadabc74cb18925fcd2f9f952730b48";
-const url = "http://api.openweathermap.org/data/2.5/weather?id=524901&appid="+apiKey;
-let zip = "";
+const url = "http://api.openweathermap.org/data/2.5/weather?q=";
+const apiKey = "&appid=ccadabc74cb18925fcd2f9f952730b48";
+// add &units=metric
 
-console.log(url);
+//get zip input
+let button = document.getElementById("generate");
+
+button.addEventListener('click', getData);
+
+function getData(e){
+    const newZip = document.getElementById('zip').value;
+    const newCountry = document.getElementById('country').value;
+    getZip(url+newZip+','+newCountry+apiKey);
+
+}
+
+
+
+const getZip = async (url, newZip, newCountry, apiKey)=>{
+    const res = await fetch(url+newZip+','+newCountry+apiKey)
+    try {
+        const data = await res.json();
+        console.log(data);
+    }
+    catch(error) {
+        console.log('error', error);
+    }
+}
+
+console.log(getZip(url, "vienna", "AT", apiKey));
+
 
 // const postData = async ( url = '', data = {})=>{
 //     console.log(data);
 //       const response = await fetch(url, {
-//       method: 'POST', 
+//       method: 'POST',
 //       credentials: 'same-origin',
 //       headers: {
 //           'Content-Type': 'application/json',
 //       },
-//      // Body data type must match "Content-Type" header        
-//       body: JSON.stringify(data), 
+//       // Body data type must match "Content-Type" header
+//       body: JSON.stringify(data),
 //     });
 
 //       try {
 //         const newData = await response.json();
 //         console.log(newData);
 //         return newData;
-//       }catch(error) {
+//       } catch(error) {
 //       console.log("error", error);
 //       }
 //   }
