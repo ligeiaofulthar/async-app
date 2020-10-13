@@ -88,3 +88,41 @@ button {
     background-color: #f18983;
     color: #173b4a;
 }
+
+form {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 0px 30px;
+    grid-template-areas:
+    "top top top top top top top top top top top top"
+    "left left left left left left right right right right right right"
+    "main main main main main main main main main main main main"
+    "button button button button button button button button button button button button"
+    "cm cm cm cm cm cm cm cm cm cm cm cm";
+}
+
+.md-top {
+    grid-area: top;
+}
+
+.md-left {
+    grid-area: left;
+}
+
+.md-right {
+    grid-area: right;
+    width: auto;
+}
+
+.md-main {
+    grid-area: main;
+}
+
+.md-comment {
+    grid-area: cm;
+}
+
+.md-button {
+    grid-area: button;
+}
