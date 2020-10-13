@@ -1,66 +1,85 @@
-// Acquire API credentials from OpenWeatherMap website. Use your credentials and the base url to create global variables at the top of your app.js code.
-// Write an async function in app.js that uses fetch() to make a GET request to the OpenWeatherMap API.
-// Create an event listener for the element with the id: generate, with a callback function to execute when it is clicked.
-// Inside that callback function call your async GET request with the parameters:
-// base url
-// user entered zip code (see input in html with id zip)
-// personal API key
+// Make date
+let d = new Date();
+let newDate = + d.getDate()+'.'+d.getMonth()+'.'+ d.getFullYear();
 
-const url = "http://api.openweathermap.org/data/2.5/weather?q=";
-const apiKey = "&appid=ccadabc74cb18925fcd2f9f952730b48";
-const metric = "&units=metric";
+// Personal API Key for OpenWeatherMap API
+const url = "https://api.openweathermap.org/data/2.5/weather?q=";
+const apiKey = "&appid=ccadabc74cb18925fcd2f9f952730b48&units=metric";
 
-//get zip input
-
+// Event listener to add function to existing HTML DOM element
 document.getElementById("generate").addEventListener('click', getData);
 
-// There will be a GET request to open weather API to get the temperature
-// There will be another GET request to our server to get information about recent entry from the last temperature
-// There will be a POST request to submit the new data entry to the server.
-
+/* Function called by event listener */
 function getData(e){
     e.preventDefault();
-    let newZip = document.getElementById('zip').value;
+    let newCity = document.getElementById('city').value;
     let newCountry = document.getElementById('country').value;
-    getZip(newZip+','+newCountry);
-}
+    let feelings = document.getElementById("feelings").value;
+    let name = document.getElementById("name").value;
 
-const getZip = async (zip, country)=>{
-    const res = await fetch(url+zip+','+country+apiKey+metric)
+    if (newCity == "" && newCountry == "") {
+        alert("please insert name of a city and the corresponding country");
+    } else if (newCity == ""){
+        alert("please insert name of a city");
+    } else if(newCountry == ""){
+        alert("please insert name of a country");
+    }
+    getWeather(newCity+','+newCountry)
+    .then(function (data) {
+        postData('/addData', {
+            userName: name,
+            temperature: data.main.temp,
+            date: newDate,
+            userFeel: feelings
 
-    // const res = await fetch(`${url}${newZip},${newCountry}${apiKey}`)
+        })
+    }).then(renderUI);
+};
+
+/* Function to GET Web API Data*/
+const getWeather = async (newCity,newCountry)=>{
+    const res = await fetch(url+newCity+','+newCountry+apiKey)
     try {
         const data = await res.json();
-        console.log(data);
+        return data;
     }
     catch(error) {
         console.log('error', error);
     }
 }
 
-// console.log(getZip(url, "vienna", "AT", apiKey));
+/* Function to POST data */
+const postData = async ( url = '', data = {})=>{
+      const req = await fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
 
+    });
 
-// const postData = async ( url = '', data = {})=>{
-//     console.log(data);
-//       const response = await fetch(url, {
-//       method: 'POST',
-//       credentials: 'same-origin',
-//       headers: {
-//           'Content-Type': 'application/json',
-//       },
-//       // Body data type must match "Content-Type" header
-//       body: JSON.stringify(data),
-//     });
+    try {
+        const newData = await req.json();
+        return newData;
+    }
+    catch(error) {
+        console.log("error", error);
+    }
+  }
 
-//       try {
-//         const newData = await response.json();
-//         console.log(newData);
-//         return newData;
-//       } catch(error) {
-//       console.log("error", error);
-//       }
-//   }
-
-// postData('/add', {answer:42});
-// postData('/addAnimal', {animal: 'cat'})
+/* Function to GET Project Data */
+const renderUI = async () =>{
+    const request = await fetch('/get');
+    try {
+    const htmlData = await request.json();
+    document.getElementById("name-content").innerHTML = `Name: ${htmlData.userName}`;
+    document.getElementById("date").innerHTML = `Date: ${htmlData.date}`;
+    document.getElementById("temp").innerHTML = `Temperature: ${htmlData.temperature+' °C'}`;
+    document.getElementById("content").innerHTML = `Your feelings: ${htmlData.userFeel}`;
+    }
+    catch(error) {
+        console.log("error", error);
+    }
+};
