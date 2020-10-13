@@ -10,11 +10,14 @@ async weather app for udacity
 
 ## Instructions
 
-In this project, I develop an async weather app, which takes input in form of city & country from the openweatermap api and returns temperature & date. Additionally the user can add his feelings.
+To look at my project, run the following command in the root of the project folder in the terminal
+`node server.js`
 
-To look at my project, open `index.html`
+Then go to http://localhost:3000
 
 ## Project Description
+
+In this project, I develop an async weather app, which takes input in form of city & country from the openweatermap api and returns temperature & date. Additionally the user can add his feelings.
 
 ## Technologies
 
@@ -30,4 +33,4 @@ To look at my project, open `index.html`
 ## Credits
 made by Yulia, project by udacity
 
-If you find bugs, write me an email office@yulia.graphics
+If you find bugs, write me an email to office@yulia.graphics
