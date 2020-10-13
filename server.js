@@ -9,15 +9,18 @@ const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
+
 //cors
 const cors = require('cors')
 app.use(cors());
 
+const path = require('path');
+
 /* Initializing the main project folder */
-app.use(express.static('website'));
+app.use(express.static(path.join('website')));
 
+// Spin up the server
 const port = 3000;
-
 const server = app.listen(port, listening);
 
 function listening() {
@@ -25,56 +28,23 @@ function listening() {
     console.log(`running on localhost: ${port}`);
 }
 
-//app endpoint
+// app endpoint
 let projectData = {};
 
-// Add a GET route that returns the projectData object in your server code
-// Then, add a POST route that adds incoming data to projectData.
-// The POST route should anticipate receiving three pieces of data from the request body
-// temperature
-// date
-// user response
-// Make sure your POST route is setup to add each of these values with a key to projectData.
-
 /* get route */
-app.get('/get', sendData());
+app.get('/get', sendData);
 
 function sendData(req, res) {
     res.send(projectData);
 }
 
 /* post route */
-app.post('/add', addData());
+app.post('/addData', addData);
 
-function addData (req, res){
-    let data = req.body;
-    // Create new entry for JS Object Endpoint
-    projectData["temp"] = data.temp;
-    projectData["date"] = data.date;
-    projectData["user"] = data.user;
-    console.log("data received");
-
-    // Send response to Endpoint
+function addData(req,res){
+    projectData['userName'] = req.body.userName;
+    projectData['date'] = req.body.date;
+    projectData['temperature'] = req.body.temperature;
+    projectData['userFeel'] = req.body.userFeel;
     res.send(projectData);
 }
-
-// app.post('/addWeather', storeWeatherData());
-// function storeWeatherData(req, res) {
-//     projectData=req.body;
-//     console.log("data received");
-//     return data;
-// }
-
-
-    // console.log(req.body)
-
-    // let newData = {
-    //     temperature: responseData.temp,
-    //     date: responseData.date,
-    //     userResponse: responseData.userResponse
-    // }
-    // projectData.assign(req.body)
-    // Object.assign(projectData, newData);
-    // console.log("Wwork22");
-
-  // console.log(request.body)
